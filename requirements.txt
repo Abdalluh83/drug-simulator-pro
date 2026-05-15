@@ -1,0 +1,63 @@
+# ============================================================
+# AI Smart Drug Simulator — Research-Grade CADD Platform v3.1
+# Group 2 | Pharmaceutical Manufacturing Technology | Faculty of Applied Health Sciences, Borg Alarab Technological University
+# ============================================================
+#
+# Installation Tiers:
+# -------------------
+#   Tier 1 — Minimum (core pipeline works, fallback descriptors):
+#     pip install flask numpy scikit-learn scipy requests
+#
+#   Tier 2 — Recommended (exact descriptors + PubChem lookup):
+#     pip install flask numpy scikit-learn scipy requests pubchempy rdkit
+#
+#   Tier 3 — Full research stack (all features):
+#     pip install flask numpy scikit-learn scipy requests pubchempy rdkit \
+#                 vina meeko shap flask-cors torch
+
+# ── CORE (required) ──────────────────────────────────────────
+flask>=2.3               # Web framework + REST API
+numpy>=1.24              # Numerical computation (GNN, ML, descriptors)
+scikit-learn>=1.3        # RF classifier, CV, StandardScaler
+scipy>=1.11              # Sparse matrices for GNN adjacency
+requests>=2.31           # PDB RCSB + PubChem API fetching
+
+# ── STRONGLY RECOMMENDED ─────────────────────────────────────
+pubchempy>=1.0.4         # Drug name → SMILES (PubChem REST)
+# rdkit                  # Exact MW/LogP/HBD/HBA/TPSA/QED/ECFP4/MACCS
+#   pip install rdkit
+#   Without RDKit: fallback approximations used (labelled "Approximate" in output)
+#   MW error: ±15 Da | LogP error: ±1.5 | HBD: regex-based (less accurate)
+
+# ── OPTIONAL ENHANCEMENTS ────────────────────────────────────
+# flask-cors             # CORS headers for external API access
+#   pip install flask-cors
+
+# vina                   # Real AutoDock Vina docking
+#   pip install vina
+#   Without: heuristic QSAR scoring (MAE 0.94 kcal/mol, labelled)
+#   With:    physics-based docking (MAE < 0.5 kcal/mol)
+
+# meeko                  # PDBQT ligand preparation for Vina
+#   pip install meeko
+#   Required for real Vina docking when 'vina' is installed
+
+# shap                   # Real SHAP explainability (Lundberg & Lee 2017)
+#   pip install shap
+#   Without: manual Shapley approximation (less accurate)
+
+# torch                  # Full PyTorch GNN backend
+#   pip install torch
+#   Without: NumPy GNN (80.7% CV) | With: full MPNN (87-92% CV)
+
+# torch-geometric        # Full MPNN (requires torch)
+#   pip install torch-geometric
+
+# ── REFERENCES ───────────────────────────────────────────────
+# RDKit:          Landrum (2006). RDKit: Open-Source Cheminformatics
+# AutoDock Vina:  Trott & Olson, J. Comput. Chem. 2010, 31, 455-461
+# meeko:          Eberhardt et al., J. Chem. Inf. Model. 2021
+# SHAP:           Lundberg & Lee, NeurIPS 2017
+# scikit-learn:   Pedregosa et al., JMLR 2011, 12, 2825-2830
+# PyTorch:        Paszke et al., NeurIPS 2019
+# pubchempy:      https://github.com/mcs07/PubChemPy
