@@ -1,17 +1,17 @@
 # ============================================================
-# AI Smart Drug Simulator — Research-Grade CADD Platform v3.1
-# Group 2 | Pharmaceutical Manufacturing Technology | Faculty of Applied Health Sciences, Borg Alarab Technological University
+# AI Smart Drug Simulator: CADD pipeline (Flask + scikit-learn)
+# Graduation project, Borg El Arab Technological University
 # ============================================================
 #
-# Installation Tiers:
+# Installation tiers:
 # -------------------
-#   Tier 1 — Minimum (core pipeline works, fallback descriptors):
+#   Tier 1: Minimum (core pipeline works, fallback descriptors):
 #     pip install flask numpy scikit-learn scipy requests
 #
-#   Tier 2 — Recommended (exact descriptors + PubChem lookup):
+#   Tier 2: Recommended (exact descriptors + PubChem lookup):
 #     pip install flask numpy scikit-learn scipy requests pubchempy rdkit
 #
-#   Tier 3 — Full research stack (all features):
+#   Tier 3: Optional extras (real Vina docking, SHAP, GNN):
 #     pip install flask numpy scikit-learn scipy requests pubchempy rdkit \
 #                 vina meeko shap flask-cors torch
 
