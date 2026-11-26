@@ -1,21 +1,14 @@
-# AI Smart Drug Simulator — Research-Grade CADD Platform v3.1
+# AI Smart Drug Simulator
 
-**Group 2 | Pharmaceutical Manufacturing Technology
-Faculty of Applied Health Sciences, Borg Alarab Technological University**  
-*Graduation Project — Computer-Aided Drug Design*
+**A Python/Flask platform that takes a drug name or SMILES string and runs a 10-stage computer-aided drug design analysis: descriptors, drug-likeness, ADME, toxicity, docking, ML bioactivity prediction and explainability.**
 
----
+*Graduation project, Borg El Arab Technological University.*
 
-## Platform Overview
+## Overview
 
-A full Computer-Aided Drug Design (CADD) pipeline implementing state-of-the-art
-in-silico drug discovery methodology. The platform integrates 10 pipeline stages
-into a unified research interface, comparable in architecture to commercial suites
-(Schrödinger, MOE) and open-access tools (SwissADME, pkCSM).
+The platform combines 10 pipeline stages behind one web interface and a 34-endpoint REST API. It follows the same general workflow as tools such as SwissADME and pkCSM, and uses published methods at each stage (see the references below). It is a learning and prototyping tool built as a student project. It is not a replacement for commercial suites and is not validated for clinical or regulatory use.
 
-**Suggested paper title:**  
-*"AI-Assisted Computer-Aided Drug Discovery Platform for Integrated Virtual
-Screening and ADMET Prediction"*
+**Stack:** Python, Flask, NumPy, scikit-learn, SciPy, RDKit, PubChemPy. Optional: AutoDock Vina, SHAP, PyTorch.
 
 ---
 
@@ -76,7 +69,7 @@ SMILES / Drug Name
    ├─ Random Forest (Breiman 2001): 83–85% 5-fold Stratified CV
    ├─ GNN / topology-augmented NN: 80.7% 5-fold CV
    ├─ Dataset: n=2,000 ChEMBL-derived (5 activity classes)
-   └─ No data leakage (validated, audited)
+   └─ Train/test leakage checked
        │
        ▼
 ⑧ Explainable AI
@@ -89,7 +82,7 @@ SMILES / Drug Name
    └─ Composite Drug Score: 40% docking + 30% drug-likeness + 30% ADME
        │
        ▼
-⑩ Scientific Validation
+⑩ Validation
    ├─ 10 FDA drugs vs DrugBank v5.1 / ChEMBL / FDA labels
    ├─ Pearson r, MAE per property
    └─ Benchmark vs SwissADME / AutoDock Vina / pkCSM
@@ -97,7 +90,7 @@ SMILES / Drug Name
 
 ---
 
-## Validated Performance
+## Performance (internal validation)
 
 | Metric | Value | Method | Reference |
 |--------|-------|--------|-----------|
@@ -109,7 +102,7 @@ SMILES / Drug Name
 | BBB Accuracy | 80% | 10-drug validation | Clark 1999 |
 | Bioavail. MAE | ~18% | vs FDA labels | Yoshida & Topliss 2000 |
 
-### Ablation Study (RF model, seed=42)
+### Ablation study (random forest, seed=42)
 
 | Condition | CV Accuracy | Δ |
 |-----------|-------------|---|
@@ -123,14 +116,14 @@ SMILES / Drug Name
 
 ---
 
-## Scientific Limitations (Documented)
+## Known limitations
 
 | # | Limitation | Impact | Mitigation |
 |---|-----------|--------|-----------|
 | 1 | Dataset n=2,000 (small) | CV confidence ±2.1% | Use real ChEMBL 10k–50k for production |
 | 2 | Heuristic docking (no 3D) | MAE 0.94 vs 0.5 for real Vina | Install `vina` package |
 | 3 | No ECFP4 in ML | −5 to −10% vs fingerprint models | Add Morgan fingerprints (Rogers & Hahn 2010) |
-| 4 | GNN = topology-augmented NN | 80.7% vs 87–92% for full GNN | Install `torch torch-geometric` |
+| 4 | "GNN" is a topology-augmented neural network, not a full graph network | 80.7% vs 87–92% typical for full GNNs | Install `torch torch-geometric` |
 | 5 | First-pass metabolism not modelled | Bioavail. MAE ~18% | Separate CYP3A4 Km/Vmax model needed |
 
 ---
@@ -144,7 +137,7 @@ pip install flask numpy scikit-learn scipy requests
 # Recommended (exact descriptors)
 pip install flask numpy scikit-learn scipy requests pubchempy rdkit
 
-# Full research stack
+# Optional extras (real Vina docking, SHAP, GNN)
 pip install flask numpy scikit-learn scipy requests pubchempy rdkit \
             vina meeko shap flask-cors torch
 
@@ -170,9 +163,9 @@ python app.py
 | `/ablation` | GET | Feature ablation study |
 | `/error_analysis` | GET | Systematic error analysis |
 | `/dataset_info` | GET | Full dataset pipeline docs |
-| `/defense_qa` | GET | 10 committee Q&A |
+| `/defense_qa` | GET | Project defense Q&A |
 | `/platform_info` | GET | Full platform metadata |
-| `/scientific_report` | POST | Research-grade compound report |
+| `/scientific_report` | POST | Compound report |
 | `/similarity` | POST | Tanimoto similarity search |
 | `/xai_explain` | POST | SHAP feature attribution |
 | `/virtual_screening/...` | POST | Library screening |
